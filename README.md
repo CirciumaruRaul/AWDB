@@ -120,6 +120,7 @@ In k8s putem specifica aceste env-variable in mai multe moduri:
 - Secret
 
 Specificam in yaml dupa urmatorul format:
+
 ![image](https://github.com/user-attachments/assets/2fc03190-b3e1-4290-9aba-4e39872e723a)
 
 ```
