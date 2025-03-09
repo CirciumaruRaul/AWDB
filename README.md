@@ -1,5 +1,10 @@
 # K8s Intro
 
+## Use cases
+K8s este un manager de containere dezvoltat de google, cel mai important feature este cel de restart al containerelor pentru momentele in care din varii motive aplicatia crapa si containerul iese cu error code.
+
+Un mare avantaj al unui cluster de k8s este scalabilitate usora pe orizontala (adica putem adauga instante ale acealeasi aplicatii rapid), alt lucru atractiv in a folosi k8s este principiul de high-availability in care aplicatia este accesibila constant in ciuda erorilor.
+
 ## Install and set up
 
 Sunt cateva metode prin care putem instala k8s:
@@ -10,11 +15,11 @@ Sunt cateva metode prin care putem instala k8s:
 
 ### Recomandari:
 
-- daca e playground --> minikube
+- daca e enviroment de testing/experimentare --> minikube
 - daca trebuie sa fie rapid instalat si configuratia de baza e buna --> _kubeadm_
 - daca sunt cerinte specifice --> instalarea fiecarei componente se face de mana
 
-## Pentru demo vom folosi _minikube_
+## Pentru demo putem folosi _minikube_
 
 #### Alternativa KillerKonda --> [click me](https://killercoda.com/playgrounds/scenario/kubernetes)
 
@@ -48,12 +53,9 @@ K8s pune la dispozitie mai multe tipuri de resurse:
 - services
 - replicasets/statefulsets
 - deployments
-- daemonsets
-- namespaces
-- nodes
+- persistentVolumes / persistentVolumeClaims
 - config-maps/secrets
 - roles
-- bindings
 - cronjobs
 
 ### Overview arhitectura
@@ -61,9 +63,13 @@ K8s pune la dispozitie mai multe tipuri de resurse:
 
 
 Exista 2 tipuri de noduri:
-Master node sau control-plane-node: - ETCD-cluster - kube-scheduler - kube-controller-manager - kube-apiserver
-Worker node: - kubelet - kube-proxy
+
+ - Master node sau control-plane-node: - ETCD-cluster - kube-scheduler - kube-controller-manager - kube-apiserver
+ - Worker node: - kubelet - kube-proxy 
+
 Toate componentele de baza sunt instalate ca pods prin kubeadm intr-un namespace dedicat, adica in kube-system namespace.
+
+### Pods
 
 ### Services
 
