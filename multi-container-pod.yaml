@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: multiple-containers
+spec:
+  containers:
+  - command:
+    - sleep
+    - "4500"
+    image: busybox
+    imagePullPolicy: Always
+    name: apple
+    resources: {}
+  - name: wine
+    command:
+    - sleep
+    - "4500"
+    image: busybox
+    imagePullPolicy: Always
+    resources: {}
+  - name: scarlet
+    command:
+    - sleep
+    - "4500"
+    image: busybox
+    imagePullPolicy: Always
+    resources: {}

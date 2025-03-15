@@ -1,0 +1,105 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: elastic-stack
+spec: {}
+status: {}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    name: elastic-search
+  name: elastic-search
+  namespace: elastic-stack
+spec:
+  containers:
+  - env:
+    - name: discovery.type
+      value: single-node
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.2
+    imagePullPolicy: IfNotPresent
+    name: elastic-search
+    ports:
+    - containerPort: 9200
+      protocol: TCP
+    - containerPort: 9300
+      protocol: TCP
+    resources: {}
+    
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elastic-search
+  namespace: elastic-stack
+spec:
+  externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: port1
+    nodePort: 30200
+    port: 9200
+    protocol: TCP
+    targetPort: 9200
+  - name: port2
+    nodePort: 30300
+    port: 9300
+    protocol: TCP
+    targetPort: 9300
+  selector:
+    name: elastic-search
+  type: NodePort
+status:
+  loadBalancer: {}
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    name: kibana
+  name: kibana
+  namespace: elastic-stack
+spec:
+  containers:
+  - env:
+    - name: ELASTICSEARCH_URL
+      value: http://elasticsearch:9200
+    image: kibana:6.4.2
+    imagePullPolicy: IfNotPresent
+    name: kibana
+    ports:
+    - containerPort: 5601
+      protocol: TCP
+    resources: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: "2025-03-15T17:12:12Z"
+  name: kibana
+  namespace: elastic-stack
+  resourceVersion: "844"
+  uid: ab1a0cb3-e8c5-4c01-9181-390fdf83876f
+spec:
+  externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - nodePort: 30601
+    port: 5601
+    protocol: TCP
+    targetPort: 5601
+  selector:
+    name: kibana
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}
