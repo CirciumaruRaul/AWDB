@@ -136,6 +136,80 @@ kubectl create cm config --from-literal=key=val --dry-run=client -o yaml
 kubectl create secret generic secret --from-literal=key=val --dry-run=client -o yaml
 ```
 
+### Exercitii
+
+1. Pentru acest exercitiu vom avea nevoie sa facem deployment la un webapp.
+
+    a) Cum putem rula _deploy.yaml_ ?
+
+    b) Ce imagine ruleaza pe acest deployment?
+
+    c) Cum putem crea un service care sa aibe urmatoarele cerinte:
+
+        - Name: webapp-service
+        - Type: NodePort
+        - targetPort: 8080
+        - port: 8080
+        - nodePort: 30080
+        - selector:
+          - name: simple-webapp
+
+    d) Cum putem scala deploymentul?
+
+ 2. In acest execitiu trebuie sa identificam probleme din cadrul unei aplicatii.
+
+    a) Rulati un pod cu urmatoarele specificatii:
+
+        - name: webapp-1
+        - image: kodekloud/event-simulator
+        - port: 8080
+        - protocol: TCP
+
+    b) Ce probleme are User5?
+
+3. Rulati fisierul _envVar-pod.yaml_ si folositi comanda _kubectl_ pentru determinarea env variable ce sunt setate pe acest pod. Cum putem edita aceasta variabila de env in 'green'?
+
+4. Creati un _config-map_ cu urmatoarele specificatii si injectati acest config-map in pod-ul _webapp-color_:
+
+        - APP_COLOR: darkblue
+        - APP_OTHER: disregard
+
+5. Creati un secret generic cu urmatoarele specificatii si inlocuiti config-map-ul anterior cu acest secrt in pod-ul _webapp-color_:
+
+        - APP_COLOR: pink
+        - APP_OTHER: something
+
+6. Rulati multi-container-pod.yaml si identificati cate containere ruleaza, care este fiecare numele desemnat fiecarui container.
+
+7. Creati un multicontainer pod cu urmatoarele specificatii:
+
+        - Name: yellow
+        - Container 1 Name: lemon
+        - Container 1 Image: busybox
+        - Container 2 Name: gold
+        - Container 2 Image: redis
+
+8. Pentru acest exercitiu trebuie sa avem urmatoarele componente din ELK stack up and running: kibana-app + kibana-service, elastic-app + elastic-service, app. [elasticsearch-docs](https://www.elastic.co/guide/en/elasticsearch/reference/current/getting-started.html), [kibana-docs](https://www.elastic.co/guide/en/kibana/current/development.html) ‼️ Log-urile aplicatiei sunt scrise in pod /var/log/app/webapp ‼️
+ ```
+  kubectl apply -f elk-stack.yaml && kubectl apply -f elk-app.yaml
+ ```
+  
+
+Vrem sa adaugam un sidecar pentru app in care avem urmatoarele specificatii:
+
+SideCAR-container:
+
+    - Name: app
+    - Container Name: sidecar
+    - Container Image: kodekloud/filebeat-configured
+    - Volume Mount: log-volume
+    - Mount Path: /var/log/event-simulator/
+    - Existing Container Name: app
+    - Existing Container Image: kodekloud/event-simulator
+  
+---
+Special Thanks KodeKloud for images provided
+
 ---
 
 # Extra topics:
